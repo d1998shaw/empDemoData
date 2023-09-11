@@ -1,6 +1,6 @@
 let express=require("express");
 let app=express();
-const cors= require('cors');
+const cors=require('cors');
 app.use(express.json());
 app.use(function(req,res,next){
     res.header("Access-Control-Allow-Origin","*");
@@ -31,7 +31,7 @@ let Data={
 
 app.listen(port,()=>console.log(`Node app listening on port ${port}!`));
 app.get("/svr/department/:department",function(req,res){
-    let department=req.query.department;
+    let department=req.params.department;
  let connection=mysql.createConnection(Data);
     let sql='Select * FROM employees WHERE department=?';
     connection.query(sql,department,function(err,result){
@@ -43,7 +43,7 @@ app.get("/svr/department/:department",function(req,res){
 })
 
 app.get("/svr/designation/:designation",function(req,res){
-    let designation=req.query.designation;
+    let designation=req.params.designation;
     let connection=mysql.createConnection(Data);
   let sql="Select * FROM employees WHERE designation=?";
     connection.query(sql,designation,function(err,result){
@@ -54,8 +54,9 @@ app.get("/svr/designation/:designation",function(req,res){
         } 
     })
 })
+
 app.get("/svr/gender/:gender",function(req,res){
-    let gender=req.query.gender;
+    let gender=req.params.gender;
     let connection=mysql.createConnection(Data);
   let sql="Select * FROM employees WHERE gender=?";
     connection.query(sql,gender,function(err,result){
@@ -75,6 +76,7 @@ app.get("/svr/emps",function(req,res){
         else res.send(result);
     })
 })
+
 app.get("/emp/:empCode",function(req,res){
    let empCode=+req.params.empCode;
     let connection=mysql.createConnection(Data);
@@ -122,7 +124,6 @@ app.post("/svr/emps",function(req,res){
         if(err) res.send("Error in Database",err.message);
         else {
             res.status(200).send(body);
-          
         }
         })
 })
